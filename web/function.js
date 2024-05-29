@@ -1,4 +1,7 @@
-﻿function start() {
+﻿let m_camera;
+let m_water;
+
+function start() {
     let map = document.querySelector("#MapContianer");
     Module.initialize({
         container: map,
@@ -18,10 +21,15 @@
         defaultKey: "ezbBD(h2eFCmDQFQd9QpdzDS#zJRdJDm4!Epe(a2EzcbEzb2",
     });
 
-    setMapOption();
-    setMapLayer();
+
+
+    m_camera = new webCamera();
+    m_water = new webWater();
 }
 
+/*
+setMapOption();
+setMapLayer();
 function setMapOption() {
     // 카메라 위치
     Module.getViewCamera().setLocation(new Module.JSVector3D(129.1031735, 35.134032, 1000.0));
@@ -41,3 +49,4 @@ function setMapLayer() {
     layer.tile_load_ratio = 3.0;
     layer.simple_real3d = true;
 }
+*/
