@@ -13,8 +13,6 @@
         this.m_canvas.height = this.m_map.canvas.height;
 
         this.m_context = this.m_canvas.getContext("2d");
-
-        console.log("create webControl");
     }
 
     clear() {
@@ -22,7 +20,6 @@
     }
 
     drawGameOver() {
-        console.log("game over");
         this.clear();
 
         this.m_context.font = "72px serif";
@@ -32,8 +29,7 @@
     }
     drawHPBar() {
         this.clear();
-        var hp_height = (this.currenWater / 100.0) * 300.0;
-
+        let hp_height = (this.currenWater / 100.0) * 200.0;
         // 바탕
         this.m_context.fillStyle = "rgba(128, 128, 128, 1.0)";
         this.m_context.fillRect(this.m_map.canvas.width - 50, this.m_map.canvas.height * 0.5, 30, 300);
@@ -44,6 +40,8 @@
         // 실 데이터
         this.m_context.fillStyle = "rgba(0, 105, 148, 1.0)";
         this.m_context.fillRect(this.m_map.canvas.width - 50, this.m_map.canvas.height * 0.5 + (300 - hp_height), 30, hp_height);
+
+        console.log(hp_height);
     }
     // getter/setter
     get currenWater() {

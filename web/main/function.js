@@ -26,8 +26,9 @@ function start() {
     setMapLayer();
     setMapClass();
 
-    initializeCamera();
+    reset();
 }
+
 // 건물 레이어 등록
 function setMapLayer() {
     let layer = Module.getTileLayerList().createXDServerLayer({
@@ -38,6 +39,7 @@ function setMapLayer() {
         minLevel: 0,
         maxLevel: 15,
     });
+    layer.tileLoadRatio = 3.0;
     layer.simple_real3d = true;
 }
 // 자바 스크립트 기능 클래스 선언
@@ -46,9 +48,20 @@ function setMapClass() {
     m_water = new webWater(Module);
     m_control = new webControl(Module, "MapControl");
 }
+
+function reset() {
+    initializeCamera();
+    initializeWater();
+    initializeControl();
+
+    if (m_interval != null) clearInterval(m_interval);
+}
+
 // 초기 카메라 셋팅
 function initializeCamera() {
     m_camera.move(new Module.JSVector3D(129.1578304522455, 35.16486256763161, 70.0));
+
+    m_camera.state = 0;
     m_camera.tilt = 15;
     m_camera.direction = 145;
 
@@ -56,11 +69,27 @@ function initializeCamera() {
     Module.canvas.addEventListener("Fire_EventFinishAutoMove", complete);
 }
 
+function initializeWater() {
+    m_water.height = 0.0;
+    m_water.limit = 3.0;
+    m_water.step = 0.2;
+
+    m_water.visible = false;
+    m_water.set(m_water.height);
+}
+function initializeControl() {
+    m_control.currenWater = 0;
+    m_control.clear();
+}
+
 function complete() {
     if (m_camera.state == 0) {
         // intro
+        // 카메라 설정
         m_camera.tilt = 5;
         m_camera.state = 1;
+        // 게이지 설정
+        m_control.drawHPBar();
     }
 
     if (m_camera.state == 2) {
@@ -70,73 +99,75 @@ function complete() {
 }
 
 function intro() {
-    m_camera.state = 0;
+    reset();
+
     m_camera.addPoint(new Module.JSVector3D(129.158964, 35.163466, 55.0));
     m_camera.addPoint(new Module.JSVector3D(129.159722, 35.162588, 50.0));
     m_camera.addPoint(new Module.JSVector3D(129.161356, 35.160662, 45.0));
     m_camera.addPoint(new Module.JSVector3D(129.162349, 35.159411, 10.0));
-
     m_camera.do();
 }
 
 function gameOver() {
-    m_camera.state = 2;
+    m_water.visible = true;
 
+    m_camera.state = 2;
     m_camera.tilt = 35;
     m_camera.direction = 145;
     m_camera.move(new Module.JSVector3D(129.14719783672427, 35.17605563575466, 1500.0));
 
-    m_water.limit = 60;
-    m_water._flood_step = 2;
-
-    m_water.show(true);
+    m_water.height = 0;
+    m_water.limit = 10;
+    m_water.step = 0.4;
 
     m_interval = null;
     m_interval = setInterval(gameOverWater, 100);
-
-    /*
-    timer = setInterval(() => {
-        if (m_water.up() == false) {
-            m_control.drawGameOver();
-            clearInterval();
-        }
-    }, 100);
-    */
 }
 
 function gameOverWater() {
-    if (m_water.up() == false) {
+    m_water.height += m_water.step;
+
+    if (m_water.height >= m_water.limit) {
         m_control.drawGameOver();
         clearInterval(m_interval);
     }
+    m_water.set(m_water.height);
 }
 
 function water_up() {
-    m_water.up();
+    // 물판 설정
+    if (m_camera.state == 2) return;
+    if (m_water.height >= m_water.limit) {
+        if (m_camera.state < 2) gameOver();
+        m_camera.state = 2;
+        return;
+    }
+    if (m_water.visible == false) m_water.visible = true;
+
+    m_water.height += m_water.step;
+    m_water.setColor(255, 0, 0, 255);
+    m_water.set(m_water.height);
+
+    // 게이지 설정
+    m_control.currenWater += 10;
+    m_control.drawHPBar();
+
+    console.log(m_water.height, m_water.step, m_water.limit);
 }
 
 function water_down() {
-    m_water.down();
-}
+    if (m_water.height <= 0) {
+        m_water.visible = false;
+        return;
+    }
 
-function ui_clear() {
-    m_control.clear();
-}
+    if (m_water.visible == false) m_water.visible = true;
+    m_water.height -= m_water.step;
+    m_water.set(m_water.height);
 
-function ui_hp() {
-    m_control.drawHPBar();
-}
-
-function ui_up() {
-    m_control.currenWater += 10;
-    m_control.drawHPBar();
-}
-
-function ui_down() {
+    // 게이지 설정
     m_control.currenWater -= 10;
     m_control.drawHPBar();
-}
 
-function ui_arc() {
-    m_control.test();
+    console.log(m_water.height, m_water.step, m_water.limit);
 }
