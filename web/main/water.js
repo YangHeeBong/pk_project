@@ -23,15 +23,16 @@
         this.m_flood.setHeight(this._height);
     }
     setColor(_color) {
-        this.m_flood.setColor(_color);
+        console.log(_color);
     }
 
     checkColor(_is_color) {
         let color;
-        if (_is_color == 0) color = new Module.JSColor(255, 204, 204, 25);
-        else if (_is_color == 1) color = new Module.JSColor(255, 171, 179, 173);
-        else if (_is_color == 3) color = new Module.JSColor(255, 217, 163, 152);
-        else if (_is_color == 4) color = new Module.JSColor(255, 204, 204, 25);
+        if (_is_color <= 0.6) color = new Module.JSColor(255, 70, 130, 180);
+        else if (_is_color <= 1.2) color = new Module.JSColor(255, 70, 130, 180);
+        else if (_is_color <= 1.8) color = new Module.JSColor(255, 64, 224, 208);
+        else if (_is_color <= 2.4) color = new Module.JSColor(255, 139, 69, 19);
+        else color = new Module.JSColor(255, 165, 42, 42);
         return color;
     }
 

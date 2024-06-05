@@ -1,6 +1,7 @@
 ﻿let m_camera;
 let m_water;
 let m_control;
+let m_game;
 let m_interval;
 
 function start() {
@@ -22,7 +23,6 @@ function start() {
         },
         defaultKey: "ezbBD(h2eFCmDQFQd9QpdzDS#zJRdJDm4!Epe(a2EzcbEzb2",
     });
-
     setMapLayer();
     setMapClass();
 
@@ -42,23 +42,41 @@ function setMapLayer() {
     layer.tileLoadRatio = 3.0;
     layer.simple_real3d = true;
 }
-// 자바 스크립트 기능 클래스 선언
+/**
+ * 초기화 관련 이벤트 처리
+ */
 function setMapClass() {
+    // 자바 스크립트 기능 클래스 선언
     m_camera = new webCamera(Module);
     m_water = new webWater(Module);
     m_control = new webControl(Module, "MapControl");
+    m_game = new webFishGame("MapControl");
+
+    /*
+    m_game.m_canvas.addEventListener("click", () => {
+        console.log("click");
+        if (!fishing) {
+            fishing = true;
+            message = "Fishing...";
+            setTimeout(() => {
+                fishCaught = Math.random() > 0.5; // 50% 확률로 물고기 잡기
+                if (fishCaught) {
+                    score++;
+                    message = "You caught a fish! Score: " + score;
+                } else {
+                    message = "No fish caught. Try again!";
+                }
+                fishing = false;
+                draw();
+            }, 2000); // 2초 후 결과 확인
+            draw();
+        }
+    });
+    */
 }
 
-function reset() {
-    initializeCamera();
-    initializeWater();
-    initializeControl();
-
-    if (m_interval != null) clearInterval(m_interval);
-}
-
-// 초기 카메라 셋팅
 function initializeCamera() {
+    // 초기 카메라 설정
     m_camera.move(new Module.JSVector3D(129.1578304522455, 35.16486256763161, 70.0));
 
     m_camera.state = 0;
@@ -70,6 +88,7 @@ function initializeCamera() {
 }
 
 function initializeWater() {
+    // 초기 물판 설정
     m_water.height = 0.0;
     m_water.limit = 3.0;
     m_water.step = 0.2;
@@ -82,6 +101,7 @@ function initializeControl() {
     m_control.clear();
 }
 
+// 내부 이벤트
 function complete() {
     if (m_camera.state == 0) {
         // intro
@@ -96,6 +116,25 @@ function complete() {
         m_camera.tilt = 30;
         m_camera.direction = 145;
     }
+}
+
+function gameOverWater() {
+    m_water.height += m_water.step;
+
+    if (m_water.height >= m_water.limit) {
+        m_control.drawGameOver();
+        clearInterval(m_interval);
+    }
+    m_water.set(m_water.height);
+}
+
+// UI 이벤트
+function reset() {
+    initializeCamera();
+    initializeWater();
+    initializeControl();
+
+    if (m_interval != null) clearInterval(m_interval);
 }
 
 function intro() {
@@ -120,38 +159,35 @@ function gameOver() {
     m_water.limit = 10;
     m_water.step = 0.4;
 
+    m_control.clear();
+
     m_interval = null;
     m_interval = setInterval(gameOverWater, 100);
-}
-
-function gameOverWater() {
-    m_water.height += m_water.step;
-
-    if (m_water.height >= m_water.limit) {
-        m_control.drawGameOver();
-        clearInterval(m_interval);
-    }
-    m_water.set(m_water.height);
 }
 
 function water_up() {
     // 물판 설정
     if (m_camera.state == 2) return;
     if (m_water.height >= m_water.limit) {
-        if (m_camera.state < 2) gameOver();
+        if (m_camera.state < 2) {
+            m_water.setColor(m_water.checkColor(0));
+            gameOver();
+        }
         m_camera.state = 2;
         return;
     }
     if (m_water.visible == false) m_water.visible = true;
 
+    let color;
+
     m_water.height += m_water.step;
-    m_water.setColor(255, 0, 0, 255);
+    color = m_water.checkColor(m_water.height);
+    m_water.setColor(color);
     m_water.set(m_water.height);
 
     // 게이지 설정
     m_control.currenWater += 10;
-    m_control.drawHPBar();
-
+    m_control.drawHPBar(color.r, color.g, color.b);
     console.log(m_water.height, m_water.step, m_water.limit);
 }
 
@@ -162,12 +198,24 @@ function water_down() {
     }
 
     if (m_water.visible == false) m_water.visible = true;
+
+    let color;
+
     m_water.height -= m_water.step;
+    color = m_water.checkColor(m_water.height);
+    m_water.setColor(color);
     m_water.set(m_water.height);
 
     // 게이지 설정
     m_control.currenWater -= 10;
-    m_control.drawHPBar();
+    m_control.drawHPBar(color.r, color.g, color.b);
 
     console.log(m_water.height, m_water.step, m_water.limit);
+}
+
+function game_on() {
+    m_game.game = true;
+}
+function game_off() {
+    m_game.game = false;
 }
