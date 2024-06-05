@@ -31,6 +31,7 @@ function start() {
 
 // 건물 레이어 등록
 function setMapLayer() {
+    /*
     let layer = Module.getTileLayerList().createXDServerLayer({
         url: "https://xdworld.vworld.kr",
         servername: "XDServer3d",
@@ -41,7 +42,9 @@ function setMapLayer() {
     });
     layer.tileLoadRatio = 3.0;
     layer.simple_real3d = true;
+    */
 }
+
 /**
  * 초기화 관련 이벤트 처리
  */
@@ -50,29 +53,7 @@ function setMapClass() {
     m_camera = new webCamera(Module);
     m_water = new webWater(Module);
     m_control = new webControl(Module, "MapControl");
-    m_game = new webFishGame("MapControl");
-
-    /*
-    m_game.m_canvas.addEventListener("click", () => {
-        console.log("click");
-        if (!fishing) {
-            fishing = true;
-            message = "Fishing...";
-            setTimeout(() => {
-                fishCaught = Math.random() > 0.5; // 50% 확률로 물고기 잡기
-                if (fishCaught) {
-                    score++;
-                    message = "You caught a fish! Score: " + score;
-                } else {
-                    message = "No fish caught. Try again!";
-                }
-                fishing = false;
-                draw();
-            }, 2000); // 2초 후 결과 확인
-            draw();
-        }
-    });
-    */
+    m_game = new webFishGame(Module, "MapControl");
 }
 
 function initializeCamera() {

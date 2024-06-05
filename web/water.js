@@ -24,6 +24,7 @@
     }
     setColor(_color) {
         console.log(_color);
+        this.m_flood.setColor(_color);
     }
 
     checkColor(_is_color) {

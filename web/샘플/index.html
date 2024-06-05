@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gauge Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+        }
+
+        #gauge-container {
+            position: relative;
+            width: 600px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+
+        }
+
+        #gauge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: blue;
+            border-radius: 5px 0 0 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gauge-container">
+        <div id="gauge"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
