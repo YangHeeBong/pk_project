@@ -1,37 +1,77 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-        <title>project</title>
-        <script src="function.js"></script>
-        <script src="camera.js"></script>
-        <script src="water.js"></script>
-        <script src="control.js"></script>
-    </head>
 
-    <div id="my_div" style="background: cornsilk; position: relative; z-index: 2; width: 200px; height: 30px">
-        <input type="button" value="intro" onClick="intro();" />
-        <input type="button" value="gameOver" onClick="gameOver();" /> </br>
-        <input type="button" value="up" onClick="water_up();" />
-        <input type="button" value="down" onClick="water_down();" /></br>
-        <input type="button" value="clear" onClick="ui_clear();" />
-        <input type="button" value="hp" onClick="ui_hp();" />
-        <input type="button" value="up" onClick="ui_up();" />
-        <input type="button" value="down" onClick="ui_down();" />
-        <input type="button" value="arc" onClick="ui_arc();" />
-    </div>
+<head>
+    <title>project</title>
+    <script src="function.js"></script>
+    <script src="camera.js"></script>
+    <script src="water.js"></script>
+    <script src="control.js"></script>
+    <script src="game.js"></script>
 
-    <body>
-        <script>
-            var initScript = document.createElement("script");
-            initScript.src = "./init.js";
-            document.body.appendChild(initScript);
-        </script>
-        
-        
-        <div id="MapContianer" style="width: 95%;height: 95%;position: absolute;z-index: 0;">
-            <canvas id="MapControl" width="100" height="100" tabindex="-1" style="position: absolute;z-index: 1;"></canvas>
+    <style>
+        #gauge-container {
+            position: relative;
+            width: 400px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #gauge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: blue;
+            border-radius: 5px 0 0 5px;
+        }
+
+        #target-box {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 40px;
+            background-color: rgba(255, 0, 0, 0.5);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+
+</head>
+
+
+<div id="my_div" style="background: cornsilk; position: relative; z-index: 2; width: 600px; height: 30px">
+    <input type="button" value="reset" onClick="reset();" />
+    <input type="button" value="intro" onClick="intro();" />
+    <input type="button" value="gameOver" onClick="gameOver();" />
+    <input type="button" value="up" onClick="water_up();" style="margin-left: 50px" />
+    <input type="button" value="down" onClick="water_down();" />
+    <input type="button" value="gameOn" onClick="game_on();" style="margin-left: 50px" />
+    <input type="button" value="gameOff" onClick="game_off();" />
+
+
+</div>
+
+<body>
+    <script>
+        var initScript = document.createElement("script");
+        initScript.src = "./init.js";
+        document.body.appendChild(initScript);
+    </script>
+
+
+    <div id="MapContianer" style="width: 95%; height: 95%; position: absolute; z-index: 0">
+        <canvas id="MapControl" width="100" height="100" tabindex="-1" style="position: absolute; z-index: 1"></canvas>
+
+        <div id="gauge-container" style="position: absolute; z-index: 2; visibility: hidden;">
+            <div id="gauge"></div>
+            <div id="target-box"></div>
         </div>
-    </body>
+    </div>
+</body>
 
-    
 </html>
