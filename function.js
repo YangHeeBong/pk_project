@@ -31,7 +31,6 @@ function start() {
 
 // 건물 레이어 등록
 function setMapLayer() {
-    /*
     let layer = Module.getTileLayerList().createXDServerLayer({
         url: "https://xdworld.vworld.kr",
         servername: "XDServer3d",
@@ -42,7 +41,6 @@ function setMapLayer() {
     });
     layer.tileLoadRatio = 3.0;
     layer.simple_real3d = true;
-    */
 }
 
 /**
