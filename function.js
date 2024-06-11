@@ -146,14 +146,15 @@ function gameOver() {
 
 function water_up() {
     // 물판 설정
-    if (m_camera.state == 2) return;
+    if (m_camera.state == 2) return false;
     if (m_water.height >= m_water.limit) {
         if (m_camera.state < 2) {
             m_water.setColor(m_water.checkColor(0));
             gameOver();
+            return false;
         }
         m_camera.state = 2;
-        return;
+        return false;
     }
     if (m_water.visible == false) m_water.visible = true;
 
@@ -167,6 +168,7 @@ function water_up() {
     // 게이지 설정
     m_control.currenWater += 10;
     m_control.drawHPBar(color.r, color.g, color.b);
+    return true;
 }
 
 function water_down() {
