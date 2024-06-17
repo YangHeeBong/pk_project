@@ -23,7 +23,6 @@
         this.m_flood.setHeight(this._height);
     }
     setColor(_color) {
-        console.log(_color);
         this.m_flood.setColor(_color);
     }
 

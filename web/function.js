@@ -31,7 +31,6 @@ function start() {
 
 // 건물 레이어 등록
 function setMapLayer() {
-    /*
     let layer = Module.getTileLayerList().createXDServerLayer({
         url: "https://xdworld.vworld.kr",
         servername: "XDServer3d",
@@ -42,7 +41,6 @@ function setMapLayer() {
     });
     layer.tileLoadRatio = 3.0;
     layer.simple_real3d = true;
-    */
 }
 
 /**
@@ -169,7 +167,6 @@ function water_up() {
     // 게이지 설정
     m_control.currenWater += 10;
     m_control.drawHPBar(color.r, color.g, color.b);
-    console.log(m_water.height, m_water.step, m_water.limit);
 }
 
 function water_down() {
@@ -190,11 +187,10 @@ function water_down() {
     // 게이지 설정
     m_control.currenWater -= 10;
     m_control.drawHPBar(color.r, color.g, color.b);
-
-    console.log(m_water.height, m_water.step, m_water.limit);
 }
 
 function game_on() {
+    m_game.life = 3;
     m_game.game = true;
 }
 function game_off() {
