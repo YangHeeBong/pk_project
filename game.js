@@ -99,9 +99,13 @@
             this.m_context.drawImage(this.m_img_fishingrod, w + 10, 10, 64, 64);
         }
 
-        this.m_context.font = "30px Arial";
-        this.m_context.fillStyle = "black";
-        this.m_context.fillText(this.m_score, canvas.width - 100, 50);
+        let score = "잡은 물고기 수: " + this.m_score;
+        this.m_context.font = "24px Arial";
+        this.m_context.fillStyle = "rgba(255, 255, 255, 1.0)";
+        this.m_context.textAlign = "center";
+        this.m_context.fillText(score, canvas.width - 120, 50);
+
+        this.m_context.fillText("STAGE 1", 70, canvas.height - 50);
 
         if (_type == 1) this.m_context.drawImage(this.m_img_success, canvas.width / 2 - 256, canvas.height / 2 - 256, 512, 512);
         else if (_type == 2) this.m_context.drawImage(this.m_img_failure, canvas.width / 2 - 256, canvas.height / 2 - 256, 512, 512);
@@ -118,9 +122,8 @@
         this.m_context.fillText("STAGE CLEAR", this.m_map.canvas.width * 0.5, this.m_map.canvas.height * 0.5);
 
         this.m_context.font = "40px serif";
-        this.m_context.textAlign = "center";
         this.m_context.fillStyle = "rgba(255, 255, 255, 1.0)";
-        let score = "Score:" + this.m_score;
+        let score = "Score:" + this.m_score * 100;
         this.m_context.fillText(score, this.m_map.canvas.width * 0.5, this.m_map.canvas.height * 0.5 + 70);
 
         this.m_canvas.removeEventListener("click", this.eventClick);
@@ -209,7 +212,7 @@
 
             if (min <= m_game.m_gauge_width && max >= m_game.m_gauge_width) {
                 m_game.draw(1);
-                m_game.m_score += 100;
+                m_game.m_score += 1;
             } else {
                 m_game.draw(2);
             }
