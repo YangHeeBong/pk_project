@@ -54,6 +54,28 @@
         this.m_context.clearRect(0, 0, this.m_canvas.width, this.m_canvas.height);
     }
 
+    click() {
+        if (m_game.m_state == 0) {
+            this.m_canvas.removeEventListener("click", this.eventClick);
+            this.m_gauge_container.removeEventListener("click", this.eventGaugeClick);
+
+            let position = Module.getMap().ScreenToMapPointEX(new Module.JSVector2D(this.m_canvas.width * 0.5, this.m_canvas.height * 0.4));
+
+            if (position == null) return;
+            if (position.altitude > 0.2) return;
+
+            position.altitude += 5;
+            m_game.m_3ds_sphere.setPosition(position);
+            m_game.m_state = 1;
+            m_game.startGauge();
+        } else if (m_game.m_state == 1) {
+            m_game.eventGaugeClick();
+        } else {
+            m_game.initialize();
+            m_game.draw(0);
+            m_game.m_state = 0;
+        }
+    }
     initialize() {
         this.clear();
         this.m_state = 0;
