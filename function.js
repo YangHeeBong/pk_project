@@ -192,7 +192,15 @@ function water_down() {
 function game_on() {
     m_game.life = 3;
     m_game.game = true;
+
+    m_camera.move(new Module.JSVector3D(129.162349, 35.159411, 10.0));
+    m_camera.tilt = 5;
+    m_camera.state = 1;
 }
 function game_off() {
     m_game.game = false;
+}
+
+function game_click() {
+    m_game.click();
 }
