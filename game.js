@@ -59,7 +59,7 @@
             this.m_canvas.removeEventListener("click", this.eventClick);
             this.m_gauge_container.removeEventListener("click", this.eventGaugeClick);
 
-            let position = Module.getMap().ScreenToMapPointEX(new Module.JSVector2D(this.m_canvas.width * 0.5, this.m_canvas.height * 0.4));
+            let position = Module.getMap().ScreenToMapPointEX(new Module.JSVector2D(this.m_canvas.width * 0.5, this.m_canvas.height * 0.45));
 
             if (position == null) return;
             if (position.altitude > 0.2) return;
